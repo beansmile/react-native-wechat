@@ -171,7 +171,6 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
                      callBack:(RCTResponseSenderBlock)callback
 {
     NSString *type = aData[RCTWXShareType];
-
     if ([type isEqualToString:RCTWXShareTypeText]) {
         NSString *text = aData[RCTWXShareDescription];
         [self shareToWeixinWithTextMessage:aScene Text:text callBack:callback];
@@ -239,6 +238,7 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
                    [type isEqualToString:RCTWXShareTypeImageResource]) {
             NSURL *url = [NSURL URLWithString:aData[RCTWXShareImageUrl]];
             NSURLRequest *imageRequest = [NSURLRequest requestWithURL:url];
+           
             [self.bridge.imageLoader loadImageWithURLRequest:imageRequest callback:^(NSError *error, UIImage *image) {
                 if (image == nil){
                     callback(@[@"fail to load image resource"]);
@@ -258,6 +258,7 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
                     
                 }
             }];
+            
         } else if ([type isEqualToString:RCTWXShareTypeFile]) {
             NSString * filePath = aData[@"filePath"];
             NSString * fileExtension = aData[@"fileExtension"];
@@ -285,18 +286,21 @@ RCT_EXPORT_METHOD(pay:(NSDictionary *)data
 
 - (void)shareToWeixinWithData:(NSDictionary *)aData scene:(int)aScene callback:(RCTResponseSenderBlock)aCallBack
 {
+    /*
     NSString *imageUrl = aData[RCTWXShareTypeThumbImageUrl];
     if (imageUrl.length && _bridge.imageLoader) {
         NSURL *url = [NSURL URLWithString:imageUrl];
         NSURLRequest *imageRequest = [NSURLRequest requestWithURL:url];
         [_bridge.imageLoader loadImageWithURLRequest:imageRequest size:CGSizeMake(100, 100) scale:1 clipped:FALSE resizeMode:RCTResizeModeStretch progressBlock:nil partialLoadBlock:nil
             completionBlock:^(NSError *error, UIImage *image) {
-            [self shareToWeixinWithData:aData thumbImage:image scene:aScene callBack:aCallBack];
+                [self shareToWeixinWithData:aData thumbImage:image scene:aScene callBack:aCallBack];
         }];
+        
     } else {
         [self shareToWeixinWithData:aData thumbImage:nil scene:aScene callBack:aCallBack];
     }
-
+    */
+    [self shareToWeixinWithData:aData thumbImage:nil scene:aScene callBack:aCallBack];
 }
 
 - (void)shareToWeixinWithTextMessage:(int)aScene
